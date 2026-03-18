@@ -92,6 +92,3 @@ This project is licensed to maximize ecosystem adoption and eliminate friction f
 See the [LICENSE](https://www.google.com/search?q=LICENSE) file for complete details.
 
 ```
-
-Would you like me to draft the `CONTRIBUTING.md` or `SECURITY.md` files next to complete your repository's documentation suite?
-```
