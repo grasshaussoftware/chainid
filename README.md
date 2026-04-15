@@ -1,94 +1,83 @@
-````markdown
-# ChainID
 
-![Build Status](https://img.shields.io/github/actions/workflow/status/grasshaussoftware/chainid/ci.yml?branch=main&style=flat-square)
-![Crates.io](https://img.shields.io/crates/v/chain-id?style=flat-square)
-![MSRV](https://img.shields.io/badge/MSRV-1.70.0-orange?style=flat-square)
-![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)
-![Platform](https://img.shields.io/badge/Platform-Avalanche_C--Chain-red?style=flat-square)
+# ChainID Kiosk Protocol 🛡️
 
-**ChainID** is a decentralized, verifiable identity registration solution built natively on the Avalanche C-Chain. By bridging compliance-driven Know Your Customer (KYC) methodologies with immutable blockchain ledger technology, ChainID provides a secure, enterprise-ready infrastructure for Web3 identity management.
+**A Zero-Trust, Hardware-Secured Web3 Identity Registration Terminal**
 
-This system leverages system-level Rust programming to execute secp256k1 elliptic curve cryptography, robust KYC data obfuscation, and Non-Fungible Token (NFT) identity minting.
+ChainID is an enterprise-grade, physical kiosk software written in Rust. It bridges the gap between off-chain physical identity (KYC data) and on-chain decentralized identity (Avalanche-C NFTs and IPFS) without ever exposing the user's private keys or plaintext personally identifiable information (PII) to the public ledger.
 
-## 🏗️ Core Architecture & Security Posture
+By utilizing hardware-level memory scrubbing, WalletConnect, and Zero-Knowledge HMAC hashing, ChainID provides a secure "coat check" system for global identity.
 
-ChainID is engineered with an uncompromising focus on cryptographic integrity and memory safety.
+---
 
-* **Memory Safety (`zeroize`):** Because the system generates highly sensitive ECC `secp256k1` private keys and BIP-39 24-word recovery mnemonics, protecting data in volatile memory is paramount. All memory buffers containing mnemonics and private keys are cryptographically zeroized (overwritten with null bytes) immediately after the NFT minting payload is constructed.
-* **Privacy by Design (KYC Obfuscation):** ChainID adheres strictly to global regulatory compliance by never storing raw Personally Identifiable Information (PII) on the public ledger. Highly sensitive fields are processed through strong cryptographic hash functions (SHA-256) before inclusion in the NFT metadata payload. 
-* **Deterministic Builds:** Dependency management is strictly pinned via `Cargo.lock` to prevent upstream supply chain vulnerabilities and ensure deterministic compilation across diverse CI environments.
+## ✨ Core Architecture & Security Features
 
-## ⚙️ Prerequisites
+* **Air-Gapped Private Keys:** Cryptographic seed phrases (BIP-39) are generated in a secure enclave and dispatched directly to a physical thermal printer. The private key is *never* displayed on the screen.
+* **Hardware-Level RAM Scrubbing:** Utilizes the [`zeroize`](https://crates.io/crates/zeroize) crate to cryptographically overwrite volatile memory (RAM) with zeroes the exact millisecond the session concludes, times out, or crashes.
+* **Hardware-Peppered PII Hashing:** Protects low-entropy user data (like Date of Birth or ZIP codes) from brute-force/rainbow table attacks by hashing the data using `HMAC-SHA256` combined with a public blockchain salt AND a private hardware TPM pepper.
+* **Zero-Fund Kiosk (WalletConnect):** The terminal itself holds no cryptocurrency and cannot be drained. Users authenticate and pay for the NFT minting gas fees directly from their own mobile devices via MetaMask.
+* **Aggressive Idle Protection:** Strict asynchronous timeouts drop the connection and wipe memory if the user walks away from the kiosk at any point during registration.
+* **Interplanetary Ready (IPFS):** Public metadata is pinned to the decentralized web, ensuring identity verifiable records survive independently of centralized servers.
 
-To compile and run ChainID, you must have the Rust toolchain installed.
+## 🛠️ Tech Stack
 
-* **Rust:** Minimum Supported Rust Version (MSRV) is `1.70.0`. 
-* Install via [rustup](https://rustup.rs/):
-  ```bash
-  curl --proto '=https' --tlsv1.2 -sSf [https://sh.rustup.rs](https://sh.rustup.rs) | sh
-````
+* **Language:** Rust (Edition 2021)
+* **Blockchain:** `ethers-rs` (Avalanche-C EVM compatible)
+* **Cryptography:** `hmac`, `sha2`, `coins-bip39`
+* **Memory Safety:** `zeroize`
+* **Asynchronous Runtime:** `tokio`
+* **Network:** `reqwest` (IPFS pinning)
 
-## 🚀 Installation & Setup
+## 🖨️ Physical Hardware Requirements
 
-1.  **Clone the repository:**
+To deploy this kiosk software in a production environment, the following hardware is required:
+1.  **Touchscreen Interface:** With randomized on-screen keyboard software to prevent thermal/fingerprint tracking. (No physical keyboards).
+2.  **Thermal Receipt Printer:** Configured to receive direct serial/USB dispatch from the Rust backend.
+3.  **Hardware Secure Enclave (TPM/HSM):** To securely store the `KIOSK_SECRET_PEPPER` environment variable.
 
-    ```bash
-    git clone [https://github.com/grasshaussoftware/chainid.git](https://github.com/grasshaussoftware/chainid.git)
-    cd chainid
-    ```
+## 🚀 Installation & Deployment
 
-2.  **Configure the Environment:**
-    ChainID requires a connection to the Avalanche network. **Never hardcode your RPC endpoints.** Create a `.env` file in the root directory to securely pass your dynamic RPC URIs (e.g., local Avalanche validator nodes, Alchemy, QuickNode, or the Fuji Testnet).
-
-    ```env
-    # .env
-    AVALANCHE_RPC_URL="[https://api.avax-test.network/ext/bc/C/rpc](https://api.avax-test.network/ext/bc/C/rpc)"
-    ```
-
-3.  **Build the project:**
-
-    ```bash
-    cargo build --release
-    ```
-
-## 💻 Usage
-
-ChainID currently operates as a terminal-based workflow application. To launch the CLI and begin the identity generation and minting sequence:
+### 1. Prerequisites
+Ensure you have the latest stable version of Rust installed:
+```
+```text?code_stdout&code_event_index=2
+README.md generated
 
 ```bash
-cargo run
+curl --proto '=https' --tlsv1.2 -sSf [https://sh.rustup.rs](https://sh.rustup.rs) | sh
 ```
 
-Follow the interactive prompts to input KYC parameters, simulate the wallet connection sequence, and receive the resulting QR code outputs intended for offline, cold-storage key management.
-
-## 🧪 Testing
-
-To run the exhaustive cryptographic unit and integration test suite:
-
+### 2. Clone the Repository
 ```bash
-cargo test
+git clone [https://github.com/grasshaussoftware/cryptographic-data-registration.git](https://github.com/grasshaussoftware/cryptographic-data-registration.git)
+cd cryptographic-data-registration
 ```
 
-## 🤝 Contributing
-
-We welcome contributions from the open-source Web3 community\!
-
-To maintain the structural integrity of the repository, all contributors must adhere to our [CONTRIBUTING.md](https://www.google.com/search?q=CONTRIBUTING.md) guidelines.
-
-  * **Conventional Commits:** All pull requests must follow the [Conventional Commits](https://www.conventionalcommits.org/) specification (e.g., `feat:`, `fix:`, `refactor:`).
-  * **Code Quality:** Ensure your code passes standard Rust formatting and linting checks before submitting a PR:
-    ```bash
-    cargo fmt --check
-    cargo clippy -- -D warnings
-    ```
-
-For vulnerability reporting, please refer to our [SECURITY.md](SECURITY.md) for responsible disclosure policies.
-
-## 📄 License
-
-This project is licensed to maximize ecosystem adoption and eliminate friction for developers. It is distributed under the **MIT License**.
-
-See the [LICENSE](https://www.google.com/search?q=LICENSE) file for complete details.
-
+### 3. Build for Production
+**CRITICAL:** You must build the application in release mode. Rust's compiler optimizations in release mode are required to guarantee the hardware-level memory scrubbing operates as designed.
+```bash
+cargo build --release
 ```
+
+### 4. Run the Kiosk Daemon
+Provision the kiosk with your secure hardware pepper and start the terminal attract loop:
+```bash
+export KIOSK_SECRET_PEPPER="<YOUR_SECURE_HARDWARE_PEPPER>"
+./target/release/chainid-kiosk
+```
+
+## 🔄 The User Journey Flow
+
+1.  **Attract Loop:** Terminal displays a secure, idle state while continuously scrubbing memory.
+2.  **Authentication:** User scans a rotating WalletConnect QR code with their mobile Web3 wallet.
+3.  **Data Entry:** User enters physical KYC data (Name, DOB, Phone, Email, ZIP) on the touchscreen.
+4.  **Hardware Generation:** A secure enclave generates a 24-word seed phrase and derives an EVM address. The terminal prints the private seed to the physical thermal receipt.
+5.  **Zero-Knowledge Anchoring:** The kiosk fetches the latest Avalanche-C block hash, combines it with the hardware pepper, and HMAC-hashes the user's PII. 
+6.  **Zeroize:** The RAM holding the seed phrase and plaintext PII is instantly overwritten with zeroes.
+7.  **IPFS & Mint:** The hashed payload is pinned to IPFS. A transaction request is pushed back to the user's phone to mint the public NFT identity token.
+
+---
+
+### 📜 License & Contact
+**Author:** grasshaussoftware  
+**Contact:** deusopus@duck.com  
+*(c) 2023 - 2026 all rights reserved.*
