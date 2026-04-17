@@ -7,29 +7,23 @@ authors = ["Cannacoin Engineering <dev@cannacoin.org>"]
 
 [dependencies]
 # Async Runtime & Event Handling
-# Required for running the non-blocking state machine and listening for camera/network events simultaneously.
 tokio = { version = "1.36", features = ["full"] }
 
 # Web3 & Blockchain Interactions
-# Ethers-rs handles the WalletConnect interactions, RPC calls to the Avalanche C-Chain, and the ERC-4337 Paymaster payload.
 ethers = { version = "2.0", features = ["rustls"] }
 
 # Cryptography & Hashing
-# Standard, audited libraries for generating the HMAC-SHA256 hashes of the user's PII.
 hmac = "0.12"
 sha2 = "0.10"
 rand = "0.8"
 
 # Strict Memory Safety
-# This is critical for kiosks. It ensures that sensitive strings (like the user's name or the seed phrase) are cryptographically overwritten with zeros in the RAM the exact millisecond they are dropped from scope.
 zeroize = { version = "1.7", features = ["zeroize_derive"] }
 
 # Wallet & Mnemonic Generation
-# Used strictly within the secure enclave execution to generate the 24-word BIP-39 phrase for the user's new identity wallet.
-coins-bip39 = "1.2"
+coins-bip39 = "0.13.0"
 
 # Hardware Security (TPM 2.0)
-# This crate provides the bindings to the Trusted Platform Module (TPM 2.0) to securely manage keys and unseal the cryptographic pepper directly from the kiosk's motherboard.
 tss-esapi = "7.2" 
 
 # Data Formatting & Utilities
@@ -37,15 +31,4 @@ serde_json = "1.0"
 chrono = "0.4"
 
 # QR Code Generation
-# For rendering the WalletConnect v2 URI to the terminal or UI frontend.
 qrcode = "0.12"
-
-# ---------------------------------------------------------
-# OPTIONAL / UPCOMING MODULES 
-# (Uncomment when transitioning from simulated events to actual physical hardware)
-# ---------------------------------------------------------
-# Computer Vision & Proximity
-# opencv = "0.88" 
-
-# Optical Character Recognition (OCR) for ID scanning
-# tesseract = "0.12"

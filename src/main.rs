@@ -7,7 +7,7 @@ use qrcode::render::unicode;
 use serde_json::json;
 use std::io::{self, Write};
 use std::time::Duration;
-use tokio::time::{sleep, timeout};
+use tokio::time::sleep;
 use tokio::sync::mpsc;
 use chrono::Utc;
 use hmac::{Hmac, Mac};
@@ -46,22 +46,7 @@ enum KioskEvent {
 // UTILITIES & CRYPTOGRAPHY
 // ---------------------------------------------------------
 fn clear_screen() {
-    print!("{} Initializing TPM 2.0 Hardware Enclave...");
-    sleep(Duration::from_millis(500)).await;
-    // In production, this decrypts the pepper directly from the physical TPM chip
-    Ok("Hardware_Bound_Pepper_9a8b7c6d5e4f".to_string())
-}
-
-async fn pin_json_to_ipfs(_payload: &serde_json::Value) -> Result<String, &'static str> {
-    println!(">>> UPLOADING METADATA TO IPFS <<<");
-    sleep(Duration::from_secs(2)).await;
-    Ok("ipfs://QmYwAPJzv5CZsnA625s3Xf2nemtYgPpHdWEz79ojWnPbdG".to_string())
-}
-
-// ---------------------------------------------------------
-// ASYNC KIOSK DAEMON
-// ---------------------------------------------------------
-#[tokio::main]
+    print!("{}
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     clear_screen();
     println!("===========================================");
