@@ -1,34 +1,18 @@
 [package]
-name = "chainid-kiosk-daemon"
-version = "2.0.0"
+name = "chainid-kiosk"
+version = "1.0.0"
 edition = "2021"
-description = "Hardware-secured AI Kiosk Daemon for ChainID Identity Minting"
-authors = ["Cannacoin Engineering <dev@cannacoin.org>"]
+description = "A secure kiosk daemon for generating sovereign digital identities. Privacy-first, zero-knowledge, hardware-secured."
+authors = ["deusopus <deusopus@duck.com>"]
 
 [dependencies]
-# Async Runtime & Event Handling
-tokio = { version = "1.36", features = ["full"] }
-
-# Web3 & Blockchain Interactions
 ethers = { version = "2.0", features = ["rustls"] }
-
-# Cryptography & Hashing
-hmac = "0.12"
-sha2 = "0.10"
-rand = "0.8"
-
-# Strict Memory Safety
-zeroize = { version = "1.7", features = ["zeroize_derive"] }
-
-# Wallet & Mnemonic Generation
-coins-bip39 = "0.13.0"
-
-# Hardware Security (TPM 2.0)
-tss-esapi = "7.2" 
-
-# Data Formatting & Utilities
+tokio = { version = "1.36", features = ["full"] }
 serde_json = "1.0"
 chrono = "0.4"
-
-# QR Code Generation
+hmac = "0.12"
+sha2 = "0.10"
+zeroize = { version = "1.7", features = ["zeroize_derive"] }
 qrcode = "0.12"
+hex = "0.4"
+tss-esapi = "7.2"
