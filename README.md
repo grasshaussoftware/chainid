@@ -1,5 +1,5 @@
 # ChainID
-
+based on a demonstration shown here -->https://www.youtube.com/live/1iAg6BITPdc?si=oaGf4rTuJlCcQ5K8
 **Sovereign Digital Identity — Simple. Secure. Humane.**
 
 A hardware-secured kiosk daemon that lets any person create a private, verifiable digital identity in under 60 seconds. Built with common sense first, designed like an Apple product, and rooted in the real-world need to help people who have lost everything.
